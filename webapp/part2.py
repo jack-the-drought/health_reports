@@ -4,11 +4,12 @@ import dateutil.parser
 from pymongo import MongoClient
 import re
 import itertools
+import os
 
-Development = True
+development = os.environ['DEV']
 client = MongoClient(host="mongo")
 
-if Development == True:
+if development == "True":
     db = client.kiwitest_dev
 else:
     db = client.kiwitest_prod

@@ -1,11 +1,12 @@
 from flask import Flask, render_template , request
 import json
 from part2 import *
+import os
 app = Flask(__name__)
-Development = True
+development = os.environ['DEV']
 client = MongoClient(host="mongo")
 
-if Development == True:
+if development == "True":
     db = client.kiwitest_dev
 else:
     db = client.kiwitest_prod
