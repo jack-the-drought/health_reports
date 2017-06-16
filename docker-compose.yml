@@ -1,0 +1,11 @@
+version: '2'
+services:
+  webapp:
+    build: ./webapp
+    ports:
+      - "5000:5000"
+    command: sh -c "python test.py && python part1.py && python main.py"
+    links:
+      - mongo
+  mongo:
+    image: mongo

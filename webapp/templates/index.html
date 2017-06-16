@@ -1,0 +1,65 @@
+<!Doctype html>
+<title>index</title>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"
+type="text/javascript"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+    $(function(){
+         // Find any date inputs and override their functionality
+         if ( $('#dateinput')[0].type != 'date' ) $('#dateinput').datepicker();
+    });
+</script>
+</head>
+<body ng-app="myApp">
+
+<div id='content' ng-controller="myController">
+
+ <div>
+   <form name="firstform">
+    Choose day:
+    <input type="date" id="dateinput" name="input" ng-model="day"
+        placeholder="yyyy-MM-dd" min="2017-01-01" max="2017-12-31" ng-required="true" />  </form>
+  <button ng-click="firstform.$valid && getPopular()" >Get Top 10 devices for the chosen day</button>
+
+  <table border="1" ng-show="popular">
+   <tr>
+    <th>Deviceid</th>
+    <th>Device count</th>
+    <th>Change from last week</th>
+  </tr>
+  <tr ng-repeat="x in popular">
+    <td>[[x.id]]</td>
+    <td>[[x.count]]</td>
+    <td>[[x.change]]</td>
+  </tr>
+</table>
+ </div>
+
+ <div>
+   <form name="secondform">
+    Choose status:
+    <select ng-model="selectedStatus" ng-options="x for x in statusesntypes.statuses" ng-required="true">
+    </select>
+    Choose Type:
+    <select ng-model="selectedType" ng-options="x for x in statusesntypes.types" ng-required="true">
+    </select>
+    <button ng-click="secondform.$valid && getTotalDevicesPerDay()">List matching devices for the last 30 days</button>
+
+  </form>
+
+  <table border="1" ng-show="totaldevices">
+   <tr>
+    <th>Day</th>
+    <th>Total devices</th>
+  </tr>
+  <tr ng-repeat="x in totaldevices">
+    <td>[[x.date]]</td>
+    <td>[[x.count]]</td>
+  </tr>
+</table>
+ </div>
+
+ </div>
+ </body>
