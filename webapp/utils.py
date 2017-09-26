@@ -23,7 +23,6 @@ def get_collection_using_env():
     except:
         development = "True" #todo: invert when env set properly from docker-compose
 
-    print "########development######==>", development
 
     try:
         is_dockerized = os.environ['DOCKERENV']
@@ -32,7 +31,6 @@ def get_collection_using_env():
     except:
         is_dockerized = "True" #todo: invert when env set properly from docker-compose
 
-    print "########is_dockerized######==>", is_dockerized
 
     if is_dockerized == "False":
 
