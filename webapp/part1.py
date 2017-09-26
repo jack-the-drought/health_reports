@@ -1,48 +1,39 @@
 import csv
 from pymongo import MongoClient
-import os
+from utils import get_collection_using_env
 
-development = os.environ['DEV']
-client = MongoClient(host="mongo")
+class Insertion:
+    def __init__(self, collection, input_file_descriptor):
+        self.collection = collection
+        self.input_file_descriptor = input_file_descriptor
 
-if development == "True":
-    db = client.kiwitest_dev
-else:
-    db = client.kiwitest_prod
+    def insert_all(self):
 
-health_reports = db.health_reports
+        try:
+            reader = csv.reader(self.input_file_descriptor)
+        except:
+            return "could not open file for reading"
 
-#change input to csv data
-def get_csv_lines(filename):
-
-    try:
-        f = open(filename,"r")
-    except Exception as e:
-        print e
-
-    try:
-        reader = csv.reader(f)
         lines = []
-        for line in reader:#make the insert happen here
-            lines.append(line)
-    except:
-        print "error reading csv file"
-    finally:
-        f.close()
-    return lines
 
-def insert_to_db(line,collection=None):
-    item = {}
-    item["timestamp"] = line[0]
-    item["id"] = line[1]
-    item["type"] = line[2]
-    item["status"] = line[3]
-    if collection:
-        return collection.insert(item)
-    else:
-        return health_reports.insert(item)
+        for line in reader:
+            self.insert_line(line)
+
+    def insert_line(self, line):
+        item = {}
+        item["timestamp"] = line[0]
+        item["id"] = line[1]
+        item["type"] = line[2]
+        item["status"] = line[3]
+        return self.collection.insert(item)
 
 
 if __name__=="__main__":
-    for item in get_csv_lines("report.csv"):
-        insert_to_db(item)
+
+    try:
+        f = open("report.csv", "r")
+    except Exception as e:
+        print e
+
+    part1 = Insertion(get_collection_using_env(), f)
+    part1.insert_all()

@@ -1,17 +1,11 @@
 from flask import Flask, render_template , request
-import json
+from utils import return_data_as_json, get_collection_using_env
 from part2 import *
 import os
+
+
 app = Flask(__name__)
-development = os.environ['DEV']
-client = MongoClient(host="mongo")
-
-if development == "True":
-    db = client.kiwitest_dev
-else:
-    db = client.kiwitest_prod
-
-health_reports = db.health_reports
+fetcher = Fetcher(get_collection_using_env())
 
 @app.route('/')
 def index():
@@ -20,12 +14,12 @@ def index():
 @app.route('/view1')
 def view1():
     day = request.args.get('day')#add check if isset to avoid crush
-    top_devices = fetch_top_from_day(day)
+    top_devices = fetcher.fetch_top_from_day(day)
     for device in top_devices:
-        device["change"] = get_percentage_change_from_last_week(device["_id"],day,device["count"])
+        device["change"] = fetcher.get_percentage_change_from_last_week(device["_id"], day, device["count"])
         device["id"] = device["_id"]
         device.pop("_id")
-    return json.dumps(top_devices)
+    return return_data_as_json(top_devices)
 
 
 @app.route('/view2')
@@ -33,13 +27,15 @@ def view2():
     status = request.args.get('status')
     device_type = request.args.get('type')
     day = datetime.datetime.now().isoformat()
-    return json.dumps(get_devices_last_thirty_days(day,status,device_type))
+    day = "2017-06-01T02:49:25.992621"
+    return return_data_as_json(fetcher.get_devices_last_thirty_days(day, status, device_type))
 
 
 @app.route('/statusesntypes')
 def statusesntypes():
-    return json.dumps(fetch_available_types_and_statuses())
+    return return_data_as_json(fetcher.fetch_available_types_and_statuses())
 
 
 if __name__ == "__main__":
-    app.run('0.0.0.0',5000,debug = True)
+
+    app.run('0.0.0.0', 5000, debug = True)

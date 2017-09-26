@@ -4,7 +4,9 @@ services:
     build: ./webapp
     ports:
       - "5000:5000"
-    command: sh -c "export DEV="True" && python test.py && python part1.py && python main.py"
+    environment:
+      - DEV = "True"
+    command: sh -c "python test.py && python part1.py && python main.py"
     links:
       - mongo
   mongo:
