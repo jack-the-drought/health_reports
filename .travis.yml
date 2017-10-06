@@ -11,7 +11,7 @@ install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
-  
+
 script:
   - tox
   - docker-compose -f docker-compose.test.yml -p ci up -d
@@ -21,4 +21,4 @@ after_script:
 
 env:
   - TOXENV=flake8
-  COMPOSE_VERSION: 1.13.0
+  - COMPOSE_VERSION=1.13.0
