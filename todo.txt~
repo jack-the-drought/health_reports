@@ -1,6 +1,0 @@
-add continuous integration
-servestaticfile
-add connection tests
-seperate code addition from build in dockerfile (add more)
-add nginx 
-add redis
