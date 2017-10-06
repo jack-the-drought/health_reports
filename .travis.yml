@@ -6,17 +6,12 @@ before_install:
  - sudo pip install tox
 
 install:
-  - curl -sSL "https://get.docker.com/gpg" | sudo -E apt-key add -
-  - echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee \
-     -a /etc/apt/sources.list
   - sudo apt-get update
-  - sudo apt-get -o Dpkg::Options::="--force-confdef" \
-     -o Dpkg::Options::="--force-confold" --assume-yes install docker-engine
-  - sudo pip install docker-compose
-
-before_script:
- - docker-compose -f docker-compose.test.yml -p ci build
-
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
+  
 script:
   - tox
   - docker-compose -f docker-compose.test.yml -p ci up -d
@@ -26,3 +21,4 @@ after_script:
 
 env:
   - TOXENV=flake8
+  COMPOSE_VERSION: 1.13.0
