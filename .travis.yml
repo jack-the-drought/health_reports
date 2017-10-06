@@ -3,7 +3,7 @@ sudo: required
 dist: trusty
 
 before_install:
- - pip install tox
+ - sudo pip install tox
 
 install:
   - curl -sSL "https://get.docker.com/gpg" | sudo -E apt-key add -
