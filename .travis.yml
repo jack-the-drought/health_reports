@@ -1,0 +1,28 @@
+# Use Ubuntu 'trusty' distribution
+sudo: required
+dist: trusty
+
+before_install:
+ - pip install tox
+
+install:
+  - curl -sSL "https://get.docker.com/gpg" | sudo -E apt-key add -
+  - echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | \
+     sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update
+  - sudo apt-get -o Dpkg::Options::="--force-confdef" \
+     -o Dpkg::Options::="--force-confold" --assume-yes install docker-engine
+  - sudo pip install docker-compose
+
+before_script:
+ - docker-compose -f docker-compose.test.yml -p ci build
+
+script:
+  - tox
+  - docker-compose -f docker-compose.test.yml -p ci up -d
+
+after_script:
+  - docker-compose down
+
+env:
+  - TOXENV=flake8

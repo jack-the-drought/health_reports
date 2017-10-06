@@ -1,0 +1,14 @@
+version: '2'
+services:
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile.test
+    ports:
+      - "5000:5000"
+    environment:
+      - DEV = "True"
+    links:
+      - mongo
+  mongo:
+    image: mongo

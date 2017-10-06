@@ -1,5 +1,4 @@
 import csv
-from pymongo import MongoClient
 from utils import get_collection_using_env
 
 class Insertion:
@@ -14,8 +13,6 @@ class Insertion:
         except:
             return "could not open file for reading"
 
-        lines = []
-
         for line in reader:
             self.insert_line(line)
 
@@ -28,7 +25,7 @@ class Insertion:
         return self.collection.insert(item)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     try:
         f = open("report.csv", "r")
