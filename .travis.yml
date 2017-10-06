@@ -21,4 +21,5 @@ after_script:
 
 env:
   - TOXENV=flake8
-  - COMPOSE_VERSION=1.13.0
+  global:
+    - COMPOSE_VERSION=1.13.0
