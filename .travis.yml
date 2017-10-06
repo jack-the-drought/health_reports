@@ -7,7 +7,7 @@ before_install:
 
 install:
   - sudo apt-get update
-  - curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
@@ -20,4 +20,4 @@ after_script:
   - docker-compose down
 
 env:
-  - TOXENV=flake8
+  - TOXENV=flake8 DOCKER_COMPOSE_VERSION=1.13.0
