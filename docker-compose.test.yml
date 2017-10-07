@@ -8,7 +8,3 @@ services:
       - "5000:5000"
     environment:
       - DEV = "True"
-    links:
-      - mongo
-  mongo:
-    image: mongo

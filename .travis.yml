@@ -14,7 +14,7 @@ install:
 
 script:
   - tox
-  - docker-compose -f docker-compose.test.yml -p ci up -d
+  - docker-compose -f docker-compose.test.yml -p ci up 
 
 after_script:
   - docker-compose down
