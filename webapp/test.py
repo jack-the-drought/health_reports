@@ -93,7 +93,7 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(
             self.fetcher.fetch_available_types_and_statuses(),
             {
-                'statuses': ['offline', 'online', 'booha'],
+                'statuses': ['offline', 'online'],
                 'types': ['gateway', 'sensor']
             }
         )
