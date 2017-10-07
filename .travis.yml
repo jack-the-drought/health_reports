@@ -1,0 +1,23 @@
+# Use Ubuntu 'trusty' distribution
+sudo: required
+dist: trusty
+
+before_install:
+ - sudo pip install tox
+
+install:
+  - sudo apt-get update
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
+
+script:
+  - tox
+  - docker-compose -f docker-compose.test.yml -p ci up --exit-code-from webapp
+
+after_script:
+  - docker-compose down
+
+env:
+  - TOXENV=flake8 DOCKER_COMPOSE_VERSION=1.13.0
